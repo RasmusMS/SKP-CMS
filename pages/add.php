@@ -3,7 +3,10 @@
 session_start();
 
 include_once('includes/connection.php');
-$pdo = db_connect();
+include_once('includes/objects/menu.php');
+
+$menu = new Menu;
+$parentMenus = $menu->fetch_parents();
 
 if (isset($_SESSION['logged_in'])) {
 
@@ -23,22 +26,13 @@ if (isset($_SESSION['logged_in'])) {
           <option selected disabled>Vælg</option>
           <option value="0">Hovedpunkt</option>
           <?php
-          $query = $pdo->prepare("SELECT id, name, MenuItems_id FROM menu WHERE MenuItems_id = ?");
-          $query->bindValue(1, 0);
-
-          var_dump("Hey");
-
-          $query->execute();
-
-          $result = $query->fetch_assoc();
-
-          foreach($result as $row) {
+          foreach($parentMenus as $row) {
             $id = $row['id'];
             $name = $row['name'];
             $parentID = $row['MenuItems_id'];
 
-            if($parentID == 0) {
-              echo "<option value='$parentID'>$name</option>";
+            if(empty($parentID)) {
+              echo "<option value='$id'>$name</option>";
             }
           }
 
