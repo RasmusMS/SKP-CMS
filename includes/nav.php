@@ -1,9 +1,10 @@
 <?php
 
+include_once('includes/connection.php');
 include_once('includes/objects/menu.php');
 
 $menu = new Menu;
-$allMenus = $menu->fetchAll();
+$parentMenu = $menu->fetch_parents();
 
  ?>
 
@@ -17,17 +18,57 @@ $allMenus = $menu->fetchAll();
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.php">Home</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="a">Action</a></li>
-            <li><a class="dropdown-item" href="b">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="c">Something else here</a></li>
-          </ul>
-        </li>
+        <?php
+
+        foreach($parentMenu as $row) {
+          $id = $row['id'];
+          $name = $row['name'];
+          $link = $row['link'];
+          $ParentID = $row['MenuItems_id'];
+
+          if(empty($ParentID)) {
+            $branch = $menu->fetch_branch($id);
+            $count = count($branch);
+
+            if($count >= 1) {
+              ?>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <?=$name?>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="index.php?page=<?=$link?>"><?=$name?></a></li>
+                  <li><hr class="dropdown-divider"></li>
+
+                  <?php
+
+                  foreach($branch as $row) {
+                    $branchName = $row['name'];
+                    $branchLink = $row['link'];
+
+                    ?>
+                    <li><a class="dropdown-item" href="index.php?page=<?=$branchLink?>"><?=$branchName?></a></li>
+                    <?php
+                  }
+
+                  ?>
+                </ul>
+              </li>
+
+              <?php
+            } elseif ($count < 1) {
+              ?>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.php?page=<?=$link?>"><?=$name?></a>
+              </li>
+              <?php
+            } else {
+              // error
+            }
+          }
+        }
+        ?>
       </ul>
       <a class="btn btn-outline-primary" href="index.php?page=admin">Admin</a>
     </div>

@@ -3,7 +3,6 @@
 session_start();
 
 include_once('includes/connection.php');
-$pdo = db_connect();
 
 if (isset($_SESSION['logged_in'])) {
   ?>
