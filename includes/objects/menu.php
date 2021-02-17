@@ -29,6 +29,29 @@ class Menu {
 
     return $query->fetchAll();
   }
+
+  public function add_submenu($name, $link, $parentID) {
+    global $pdo;
+
+    $query = $pdo->prepare("INSERT INTO menu (menu.name, menu.link, menu.MenuItems_id) VALUES (?, ?, ?)");
+
+    $query->bindValue(1, $name);
+    $query->bindValue(2, $link);
+    $query->bindValue(3, $parentID);
+
+    $query->execute();
+  }
+
+  public function add_branch($name, $link) {
+    global $pdo;
+
+    $query = $pdo->prepare("INSERT INTO menu (menu.name, menu.link) VALUES (?, ?)");
+
+    $query->bindValue(1, $name);
+    $query->bindValue(2, $link);
+
+    $query->execute();
+  }
 }
 
 ?>
