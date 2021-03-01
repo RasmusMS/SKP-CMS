@@ -30,7 +30,7 @@ class Menu {
     return $query->fetchAll();
   }
 
-  public function add_submenu($name, $link, $parentID) {
+  public function add_submenu($name, $link, $template, $parentID) {
     global $pdo;
 
     $query = $pdo->prepare("INSERT INTO menu (menu.name, menu.link, menu.MenuItems_id) VALUES (?, ?, ?)");
@@ -42,7 +42,7 @@ class Menu {
     $query->execute();
   }
 
-  public function add_branch($name, $link) {
+  public function add_branch($name, $link, $template) {
     global $pdo;
 
     $query = $pdo->prepare("INSERT INTO menu (menu.name, menu.link) VALUES (?, ?)");

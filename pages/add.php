@@ -4,9 +4,13 @@ session_start();
 
 include_once('includes/connection.php');
 include_once('includes/objects/menu.php');
+include_once('includes/objects/template.php');
 
 $menu = new Menu;
 $parentMenus = $menu->fetch_parents();
+
+$template = new Template;
+$allTemplates = $template->fetch_all();
 
 if (isset($_SESSION['logged_in'])) {
 
@@ -24,7 +28,7 @@ if (isset($_SESSION['logged_in'])) {
         <label for="menuLink">Link navn (Ingen mellemrum):</label>
         <input type="text" id="menuLink" name="menuLink" class="form-control" />
       </div>
-      <div class="justify-content-center">
+      <div class="justify-content-center mb-3">
         <label for="menuType">Vælg menupunkt</label>
         <select class="form-control" id="menuType" name="menuType">
           <option selected disabled>Vælg</option>
@@ -33,17 +37,29 @@ if (isset($_SESSION['logged_in'])) {
           foreach($parentMenus as $row) {
             $id = $row['id'];
             $name = $row['name'];
-            $parentID = $row['MenuItems_id'];
 
-            if(empty($parentID)) {
-              echo "<option value='$id'>$name</option>";
-            }
+            echo "<option value='$id'>$name</option>";
           }
 
           ?>
         </select>
       </div>
-    </div>
+      <!--<div class="justify-content-center">
+        <label for="template">Vælg template</label>
+        <select class="form-control" id="template" name="template">
+          <option selected disabled>Vælg</option>
+          <?php
+          /*foreach($allTemplates as $row) {
+            $id = $row['id'];
+            $name = $row['name'];
+
+            echo "<option value='$id'>$name</option>";
+          }*/
+
+          ?>
+        </select>
+      </div>
+    </div>-->
     <div class="justify-content-center">
       <button class="btn btn-sm btn-outline-success">
         Opret
