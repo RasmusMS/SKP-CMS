@@ -1,9 +1,10 @@
 <?php
 
-session_start();
+// I haven't really made any designs for this page
 
 include_once('includes/connection.php');
 
+// Checks if logged in
 if (isset($_SESSION['logged_in'])) {
   ?>
 
@@ -11,6 +12,7 @@ if (isset($_SESSION['logged_in'])) {
 
   <br />
 
+  <!-- Temporary links for admin pages -->
   <ol>
     <li><a href="index.php?page=add">Add Page</a></li>
     <li><a href="index.php?page=edit">Edit Page</a></li>
@@ -19,6 +21,8 @@ if (isset($_SESSION['logged_in'])) {
 
   <?php
 } else {
+
+  // If user exist, log in.
   if (isset($_POST['username'], $_POST['password'])) {
     $username = $_POST['username'];
     $password = md5($_POST['password']);
@@ -26,13 +30,18 @@ if (isset($_SESSION['logged_in'])) {
     if (empty($username) or empty($password)) {
       $error = 'All fields are required!';
     } else {
+
+      // Prepares query
       $query = $pdo->prepare("SELECT * FROM users WHERE user_name = ? AND user_password = ?");
 
+      // Bind values
       $query->bindValue(1, $username);
       $query->bindValue(2, $password);
 
+      // Execute query
       $query->execute();
 
+      // Get rowcount
       $num = $query->rowCount();
 
       if ($num == 1) {

@@ -1,52 +1,30 @@
 <?php
 
+// Not dynamically made. I made this page myself
+
 include_once('includes/templates.php');
 include_once('includes/objects/section.php');
 
-$pageID = 1;
+$sectionID = 1;
 
 $section = new Section;
-$allContent = $section->fetch_content($pageID);
+$allContent = $section->fetch_content($sectionID);
 
 foreach($allContent as $row) {
   $content = $row['content'];
   $type = $row['type'];
 
   switch ($type) {
-    case 'Heading-1':
-      $firstHeader = $content;
+    case 'Heading':
+      $header = $content;
       break;
 
-    case 'Heading-2':
-      $secondHeader = $content;
+    case 'Text':
+      $text = $content;
       break;
 
-    case 'Heading-3':
-      $thirdHeader = $content;
-      break;
-
-    case 'Text-1':
-      $firstText = $content;
-      break;
-
-    case 'Text-2':
-      $secondText = $content;
-      break;
-
-    case 'Text-3':
-      $thirdText = $content;
-      break;
-
-    case 'Img-1':
-      $firstImg = $content;
-      break;
-
-    case 'Img-2':
-      $secondImg = $content;
-      break;
-
-    case 'Img-3':
-      $thirdImg = $content;
+    case 'Img':
+      $img = $content;
       break;
 
     default:
@@ -56,7 +34,7 @@ foreach($allContent as $row) {
 
 }
 
-tpl_featurette($firstHeader,$secondHeader, $thirdHeader, $firstText, $secondText, $thirdText, $firstImg, $secondImg, $thirdImg);
+tpl_featurette($header, $text, $img);
 
 
 ?>

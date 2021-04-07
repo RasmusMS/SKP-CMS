@@ -13,6 +13,6 @@
 <body class="bg-light">
   <div class="container bg-white pb-3 shadow-sm">
 
-  <?php include_once('includes/nav.php')?>
+  <?php include_once('includes/nav.php');?>
 
   <!-- PAGE BEGINS -->
